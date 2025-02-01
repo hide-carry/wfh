@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react"
+import { useFormStatus } from "react-dom"
 import { FaTwitter } from "react-icons/fa"
+import { supabase } from "./lib/supabase"
 
 const excuses = [
   "猫が私のラップトップの上に座っているため",
@@ -14,11 +16,38 @@ const excuses = [
 
 export default function Home() {
   const [excuse, setExcuse] = useState("")
-  const [newExcuse, setNewExcuse] = useState("")
 
   useEffect(() => {
-    getRandomExcuse()
+    // URLパラメータからexcuse_idを取得
+    const params = new URLSearchParams(window.location.search)
+    const excuseId = params.get("e")
+
+    if (excuseId) {
+      // 指定されたIDの言い訳を取得
+      fetchExcuse(excuseId)
+    } else {
+      // ランダムな言い訳を表示
+      getRandomExcuse()
+    }
   }, [])
+
+  const fetchExcuse = async (id: string) => {
+    const { data, error } = await supabase
+      .from("excuse_registrations")
+      .select("value")
+      .eq("id", id)
+      .single()
+
+    if (error) {
+      console.error("Error fetching excuse:", error)
+      getRandomExcuse()
+      return
+    }
+
+    if (data) {
+      setExcuse(data.value)
+    }
+  }
 
   const getRandomExcuse = () => {
     const randomIndex = Math.floor(Math.random() * excuses.length)
@@ -30,11 +59,32 @@ export default function Home() {
     window.open(`https://twitter.com/intent/tweet?text=${text}`, "_blank")
   }
 
-  const addExcuse = () => {
-    if (newExcuse.trim()) {
-      setExcuse(`本日リモートワークします。${newExcuse}`)
-      setNewExcuse("")
+  const registerExcuse = async (formData: FormData) => {
+    const excuseValue = formData.get("excuse")
+    if (!excuseValue) return
+
+    const value = excuseValue as string;
+    
+    // TODO: idをランダム英数字8文字で登録したい
+    // supabaseでのバリデーションがわからない
+    const { data, error } = await supabase
+      .from("excuse_registrations")
+      .insert([
+        {
+          value,
+          registered_at: new Date().toISOString(),
+        },
+      ])
+      .select()
+      .single()
+
+    if (error) {
+      console.error("Error registering excuse:", error)
+      return
     }
+
+    // 作成した言い訳のIDをパラメータとしてリダイレクト
+    // window.location.href = `${window.location.pathname}?e=${data.id}`
   }
 
   return (
@@ -54,21 +104,17 @@ export default function Home() {
           </div>
 
           <div className="pt-4 border-t border-gray-200">
-            <div className="flex gap-2">
-              <input
-                type="text"
-                placeholder="理由を入力..."
-                value={newExcuse}
-                onChange={(e) => setNewExcuse(e.target.value)}
-                className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <button
-                onClick={addExcuse}
-                className="px-4 py-2 bg-green-500 text-white rounded-full hover:bg-green-600 transition-colors text-sm"
-              >
-                追加
-              </button>
-            </div>
+            <form action={registerExcuse}>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  placeholder="ほかの理由を登録..."
+                  name="excuse"
+                  className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <ExcuseSubmitButton />
+              </div>
+            </form>
           </div>
         </div>
       </div>
@@ -92,5 +138,21 @@ export default function Home() {
         </a>
       </footer>
     </main>
+  )
+}
+
+const ExcuseSubmitButton = () => {
+  const { pending } = useFormStatus();
+
+  return (
+    <button
+      type="submit"
+      disabled={pending}
+      className={`px-4 py-2 bg-green-500 text-white rounded-full transition-colors text-sm ${
+        pending ? 'opacity-50 cursor-not-allowed' : 'hover:bg-green-600'
+      }`}
+    >
+      {pending ? '登録中...' : '登録する'}
+    </button>
   )
 }
