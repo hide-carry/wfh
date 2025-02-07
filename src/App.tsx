@@ -116,12 +116,12 @@ export default function Home() {
 
           <div className="pt-4 border-t border-gray-200">
             <form action={registerExcuse}>
-              <div className="flex gap-2">
+              <div className="flex flex-col gap-2">
                 <input
                   type="text"
                   placeholder="ほかの理由を登録..."
                   name="excuse"
-                  className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <ExcuseSubmitButton />
               </div>
