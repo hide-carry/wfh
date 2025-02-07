@@ -55,7 +55,7 @@ export default function Home() {
           <div className="pt-4 border-t border-gray-200">
             <h2 className="text-lg font-semibold text-gray-800 mb-2">新しい言い訳を追加</h2>
             <p className="text-sm text-gray-600 mb-4">
-              あなたの創造的な言い訳を共有しましょう！下のフォームに入力して「登録する」をクリックしてください。
+              あなたの創造的な言い訳を共有しましょう！下のフォームに入力して「登録する」をタップしてください。
             </p>
             <form action={submitExcuse}>
               <div className="flex flex-col gap-2">
