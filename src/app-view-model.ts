@@ -1,4 +1,5 @@
-import { supabase } from "./lib/supabase"
+import { supabase } from "./lib/supabase";
+
 
 export const fetchExcuse = async (id: string) => {
     const { data, error } = await supabase
@@ -15,11 +16,23 @@ export const fetchExcuse = async (id: string) => {
       return data.value;
     }
 
-    return getRandomExcuse();
+    return fetchRandomExcuse();
   }
 
-  export const getRandomExcuse = async () => {
-    return "TODO: ランダムで返す"
+  export const fetchRandomExcuse = async () => {
+    const { data, error } = await supabase
+      .from("random_excuses")
+      .select("id")
+      .single()
+
+      console.log("data", data);
+    if (error) {
+      console.error("Error fetching excuse:", error)
+    }
+
+    if (data) {
+      return data.id;
+    }
   }
 
   export const registerExcuse = async (formData: FormData) => {

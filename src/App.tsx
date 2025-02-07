@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { useFormStatus } from "react-dom"
 import { FaTwitter } from "react-icons/fa"
-import { fetchExcuse, getRandomExcuse, registerExcuse } from "./app-view-model"
+import { fetchExcuse, fetchRandomExcuse, registerExcuse } from "./app-view-model"
 
 export default function Home() {
   const [excuse, setExcuse] = useState("")
@@ -13,7 +13,7 @@ export default function Home() {
     if (excuseId) {
       fetchExcuse(excuseId).then(setExcuse)
     } else {
-      getRandomExcuse().then(setExcuse)
+      fetchRandomExcuse().then(setExcuse)
     }
   }, [])
 
@@ -45,7 +45,7 @@ export default function Home() {
             </button>
 
             <button
-              onClick={() => getRandomExcuse().then(setExcuse)}
+              onClick={() => fetchRandomExcuse().then(setExcuse)}
               className="w-full px-4 py-2 bg-purple-600 text-white rounded-full hover:bg-purple-700 transition-colors text-sm font-medium"
             >
               他の理由を見る
