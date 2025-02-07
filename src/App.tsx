@@ -1,18 +1,7 @@
 import { useState, useEffect } from "react"
 import { useFormStatus } from "react-dom"
 import { FaTwitter } from "react-icons/fa"
-import { supabase } from "./lib/supabase"
-
-const excuses = [
-  "猫が私のラップトップの上に座っているため",
-  "隣人が工事をしているため",
-  "宅配便が来るのを待っているため",
-  "家の植物の世話をする必要があるため",
-  "自宅のWi-Fiの調子が良いため",
-  "集中力を高めるために静かな環境が必要なため",
-  "オンライン会議の準備に時間がかかるため",
-  "自宅のコーヒーマシンが最高の一杯を提供するため",
-]
+import { fetchExcuse, getRandomExcuse, registerExcuse } from "./app-view-model"
 
 export default function Home() {
   const [excuse, setExcuse] = useState("")
@@ -24,78 +13,23 @@ export default function Home() {
 
     if (excuseId) {
       // 指定されたIDの言い訳を取得
-      fetchExcuse(excuseId)
+      fetchExcuse(excuseId).then(setExcuse)
     } else {
       // ランダムな言い訳を表示
-      getRandomExcuse()
+      getRandomExcuse().then(setExcuse)
     }
   }, [])
 
-  const fetchExcuse = async (id: string) => {
-    const { data, error } = await supabase
-      .from("excuse_registrations")
-      .select("value")
-      .eq("id", id)
-      .single()
-
-    if (error) {
-      console.error("Error fetching excuse:", error)
-      getRandomExcuse()
-      return
-    }
-
-    if (data) {
-      setExcuse(data.value)
+  const submitExcuse = async (formData: FormData) => {
+    const id = await registerExcuse(formData);
+    if (id) {
+      window.location.href = `${window.location.pathname}?e=${id}`;
     }
   }
-
-  const getRandomExcuse = () => {
-    const randomIndex = Math.floor(Math.random() * excuses.length)
-    setExcuse(`本日リモートワークします。${excuses[randomIndex]}`)
-  }
-
+  
   const shareOnTwitter = () => {
     const text = encodeURIComponent(excuse)
     window.open(`https://twitter.com/intent/tweet?text=${text}`, "_blank")
-  }
-
-  const registerExcuse = async (formData: FormData) => {
-    const excuseValue = formData.get("excuse")
-    if (!excuseValue) return
-
-    const value = excuseValue as string;
-    
-    // ランダム英数字8文字のIDを生成
-    const generateRandomId = () => {
-      const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
-      let result = '';
-      for (let i = 0; i < 8; i++) {
-        result += chars.charAt(Math.floor(Math.random() * chars.length));
-      }
-      return result;
-    };
-
-    const id = generateRandomId();
-
-    const { data, error } = await supabase
-      .from("excuse_registrations")
-      .insert([
-        {
-          id, // 生成したIDを使用
-          value,
-          registered_at: new Date().toISOString(),
-        },
-      ])
-      .select()
-      .single()
-
-    if (error) {
-      console.error("Error registering excuse:", error)
-      return
-    }
-
-    // 作成した言い訳のIDをパラメータとしてリダイレクト
-    window.location.href = `${window.location.pathname}?e=${data.id}`
   }
 
   return (
@@ -115,7 +49,7 @@ export default function Home() {
           </div>
 
           <div className="pt-4 border-t border-gray-200">
-            <form action={registerExcuse}>
+            <form action={submitExcuse}>
               <div className="flex flex-col gap-2">
                 <input
                   type="text"
