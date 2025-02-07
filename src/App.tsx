@@ -119,7 +119,7 @@ export default function Home() {
               <div className="flex flex-col gap-2">
                 <input
                   type="text"
-                  placeholder="ほかの理由を登録..."
+                  placeholder="ほかの言い訳を登録..."
                   name="excuse"
                   className="w-full px-3 py-2 text-sm border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
