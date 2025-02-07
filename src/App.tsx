@@ -132,9 +132,9 @@ export default function Home() {
 
       <button
         onClick={getRandomExcuse}
-        className="mt-4 px-4 py-2 bg-white text-purple-600 rounded-full hover:bg-gray-100 transition-colors text-sm font-medium"
+        className="mt-4 px-4 py-2 bg-white text-purple-600 rounded-full hover:bg-gray-100 transition-colors text-sm font-medium w-full max-w-md"
       >
-        他の理由
+        他の理由を見る
       </button>
 
       <footer className="mt-8 text-center text-white text-sm">
