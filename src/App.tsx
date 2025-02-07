@@ -65,12 +65,23 @@ export default function Home() {
 
     const value = excuseValue as string;
     
-    // TODO: idをランダム英数字8文字で登録したい
-    // supabaseでのバリデーションがわからない
+    // ランダム英数字8文字のIDを生成
+    const generateRandomId = () => {
+      const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+      let result = '';
+      for (let i = 0; i < 8; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return result;
+    };
+
+    const id = generateRandomId();
+
     const { data, error } = await supabase
       .from("excuse_registrations")
       .insert([
         {
+          id, // 生成したIDを使用
           value,
           registered_at: new Date().toISOString(),
         },
@@ -84,7 +95,7 @@ export default function Home() {
     }
 
     // 作成した言い訳のIDをパラメータとしてリダイレクト
-    // window.location.href = `${window.location.pathname}?e=${data.id}`
+    window.location.href = `${window.location.pathname}?e=${data.id}`
   }
 
   return (
