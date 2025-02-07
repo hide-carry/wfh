@@ -107,7 +107,7 @@ export default function Home() {
           <div className="flex justify-center">
             <button
               onClick={shareOnTwitter}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors text-sm"
+              className="flex items-center justify-center gap-2 w-full px-4 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors text-sm"
             >
               <FaTwitter className="h-4 w-4" />
               Twitterで共有
