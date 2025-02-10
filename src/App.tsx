@@ -13,7 +13,7 @@ export default function Home() {
     if (excuseId) {
       fetchExcuse(excuseId).then(setExcuse)
     } else {
-      fetchRandomExcuse().then(id => {
+      fetchRandomExcuse().then((id) => {
         window.location.href = getExcuseUrl(id)
       })
     }
@@ -27,15 +27,18 @@ export default function Home() {
   }
 
   const shareOnTwitter = () => {
-    const text = encodeURIComponent(excuse)
+    const text = encodeURIComponent(`本日リモートワークします\n\n${excuse}`)
     window.open(`https://twitter.com/intent/tweet?text=${text}`, "_blank")
   }
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-purple-600 to-blue-500 flex flex-col items-center justify-center p-4">
       <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-6">
-        <div className="space-y-6">
-          <h1 className="text-2xl md:text-3xl font-bold text-center text-gray-800 leading-tight">{excuse}</h1>
+        <div className="space-y-4">
+          <p className="text-base md:text-lg text-center text-gray-600">本日リモートワークします</p>
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center text-gray-800 leading-tight">
+            {excuse}
+          </h1>
 
           <div className="flex flex-col gap-4">
             <button
@@ -47,9 +50,11 @@ export default function Home() {
             </button>
 
             <button
-              onClick={() => fetchRandomExcuse().then(id => {
-                window.location.href = getExcuseUrl(id)
-              })}
+              onClick={() =>
+                fetchRandomExcuse().then((id) => {
+                  window.location.href = getExcuseUrl(id)
+                })
+              }
               className="w-full px-4 py-2 bg-purple-600 text-white rounded-full hover:bg-purple-700 transition-colors text-sm font-medium"
             >
               他の理由を見る
