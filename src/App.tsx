@@ -82,14 +82,8 @@ export default function Home() {
       </div>
 
       <footer className="mt-8 text-center text-white text-sm">
-        <a href="#" className="hover:underline mx-2">
-          送信
-        </a>
-        <a href="#" className="hover:underline mx-2">
-          ドキュメント
-        </a>
-        <a href="#" className="hover:underline mx-2">
-          About
+        <a href="https://x.com/_hid3" target="_blank" rel="noopener noreferrer" className="hover:underline">
+          作った人: @_hide
         </a>
       </footer>
     </main>
