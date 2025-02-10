@@ -27,15 +27,18 @@ export default function Home() {
   }
 
   const shareOnTwitter = () => {
-    const text = encodeURIComponent(`本日リモートワークします\n\n${excuse}`)
-    window.open(`https://twitter.com/intent/tweet?text=${text}`, "_blank")
+    const tweetText = `本日リモートワークします。\n${excuse}\n\n#在宅勤務しますメーカー\n`
+    const url = window.location.href
+    const encodedText = encodeURIComponent(tweetText)
+    const encodedUrl = encodeURIComponent(url)
+    window.open(`https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`, "_blank")
   }
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-purple-600 to-blue-500 flex flex-col items-center justify-center p-4">
       <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-6">
         <div className="space-y-4">
-          <p className="text-base md:text-lg text-center text-gray-600">本日リモートワークします</p>
+          <p className="text-base md:text-lg text-center text-gray-600">本日在宅勤務します。</p>
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center text-gray-800 leading-tight">
             {excuse}
           </h1>
