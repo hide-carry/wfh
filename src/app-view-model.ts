@@ -22,9 +22,10 @@ export const fetchExcuse = async (id: string) => {
     const { data, error } = await supabase
       .from("random_excuses")
       .select("id")
+      .limit(1)
       .single()
 
-      console.log("data", data);
+      // console.log("data", data);
     if (error) {
       throw new Error("Error fetching random excuse")
     }
