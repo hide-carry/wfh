@@ -75,6 +75,13 @@ export const fetchExcuse = async (id: string) => {
     return data.id;
   }
 
+  export const generateTwitterShareUrl = (excuse: string, url: string) => {
+    const tweetText = `本日リモートワークします。\n${excuse}\n\n#在宅勤務しますメーカー`
+    const encodedText = encodeURIComponent(tweetText)
+    const encodedUrl = encodeURIComponent(url)
+    return `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`
+  }
+
 export const getExcuseUrl = (excuseId: string) => {
   return `${window.location.pathname}?e=${excuseId}`
 }

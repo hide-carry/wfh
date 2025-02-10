@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { useFormStatus } from "react-dom"
 import { FaTwitter } from "react-icons/fa"
-import { fetchExcuse, fetchRandomExcuse, getExcuseUrl, registerExcuse } from "./app-view-model"
+import { fetchExcuse, fetchRandomExcuse, generateTwitterShareUrl, getExcuseUrl, registerExcuse } from "./app-view-model"
 
 export default function Home() {
   const [excuse, setExcuse] = useState("")
@@ -27,11 +27,8 @@ export default function Home() {
   }
 
   const shareOnTwitter = () => {
-    const tweetText = `本日リモートワークします。\n${excuse}\n\n#在宅勤務しますメーカー\n`
     const url = window.location.href
-    const encodedText = encodeURIComponent(tweetText)
-    const encodedUrl = encodeURIComponent(url)
-    window.open(`https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`, "_blank")
+    window.open(generateTwitterShareUrl(excuse, url), "_blank")
   }
 
   return (
