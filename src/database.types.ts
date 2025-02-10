@@ -43,7 +43,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
-          id?: string
+          id: string
           registered_at: string
           value: string
         }
@@ -57,7 +57,21 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      random_excuses: {
+        Row: {
+          id: string | null
+          value: string | null
+        }
+        Insert: {
+          id?: string | null
+          value?: string | null
+        }
+        Update: {
+          id?: string | null
+          value?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       [_ in never]: never

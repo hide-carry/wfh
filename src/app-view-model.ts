@@ -1,6 +1,5 @@
 import { supabase } from "./lib/supabase";
 
-
 export const fetchExcuse = async (id: string) => {
     const { data, error } = await supabase
       .from("excuse_registrations")
@@ -9,7 +8,7 @@ export const fetchExcuse = async (id: string) => {
       .single()
 
     if (error) {
-      console.error("Error fetching excuse:", error)
+      throw new Error("Error fetching excuse")
     }
 
     if (data) {
@@ -27,12 +26,14 @@ export const fetchExcuse = async (id: string) => {
 
       console.log("data", data);
     if (error) {
-      console.error("Error fetching excuse:", error)
+      throw new Error("Error fetching random excuse")
     }
 
-    if (data) {
+    if (data.id) {
       return data.id;
     }
+
+    throw new Error("No random excuse found")
   }
 
   export const registerExcuse = async (formData: FormData) => {
