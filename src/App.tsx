@@ -83,7 +83,7 @@ export default function Home() {
 
       <footer className="mt-8 text-center text-white text-sm">
         <a href="https://x.com/_hid3" target="_blank" rel="noopener noreferrer" className="hover:underline">
-          作った人: @_hide
+          作った人: @_hid3
         </a>
       </footer>
     </main>
