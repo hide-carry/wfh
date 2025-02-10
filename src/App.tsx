@@ -13,14 +13,20 @@ export default function Home() {
     if (excuseId) {
       fetchExcuse(excuseId).then(setExcuse)
     } else {
-      fetchRandomExcuse().then(setExcuse)
+      fetchRandomExcuse().then(id => {
+        window.location.href = getExcuseUrl(id)
+      })
     }
   }, [])
+
+  const getExcuseUrl = (excuseId: string) => {
+    return `${window.location.pathname}?e=${excuseId}`
+  }
 
   const submitExcuse = async (formData: FormData) => {
     const id = await registerExcuse(formData)
     if (id) {
-      window.location.href = `${window.location.pathname}?e=${id}`
+      window.location.href = getExcuseUrl(id)
     }
   }
 
