@@ -74,3 +74,7 @@ export const fetchExcuse = async (id: string) => {
 
     return data.id;
   }
+
+export const getExcuseUrl = (excuseId: string) => {
+  return `${window.location.pathname}?e=${excuseId}`
+}

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { useFormStatus } from "react-dom"
 import { FaTwitter } from "react-icons/fa"
-import { fetchExcuse, fetchRandomExcuse, registerExcuse } from "./app-view-model"
+import { fetchExcuse, fetchRandomExcuse, getExcuseUrl, registerExcuse } from "./app-view-model"
 
 export default function Home() {
   const [excuse, setExcuse] = useState("")
@@ -18,10 +18,6 @@ export default function Home() {
       })
     }
   }, [])
-
-  const getExcuseUrl = (excuseId: string) => {
-    return `${window.location.pathname}?e=${excuseId}`
-  }
 
   const submitExcuse = async (formData: FormData) => {
     const id = await registerExcuse(formData)
